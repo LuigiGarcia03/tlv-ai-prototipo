@@ -1,0 +1,98 @@
+/* --primary: #2A9D8F; */
+/* --text: #2D3748; */
+/* --background: #F5F2EA; */
+/* --error: #F56565; */
+/* --radius: 8px; */
+
+.translateSection {
+  padding: 64px;
+  /* Usamos el fondo beige principal */
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-header);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.boxContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Estilos compartidos para las cajas de texto */
+.inputWrapper,
+.outputWrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* Evita que el textarea se desborde */
+  overflow: hidden;
+}
+
+.header {
+  padding: 12px 16px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.textarea {
+  flex-grow: 1; /* Ocupa el espacio restante */
+  min-height: 200px;
+  padding: 16px;
+  border: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text);
+  resize: none; /* Evitamos que el usuario cambie el tamaño */
+}
+
+.textarea:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px; /* Dibuja el outline por dentro */
+}
+
+/* Estado de salida (solo lectura) */
+.outputWrapper .textarea {
+  background-color: rgba(0, 0, 0, 0.02);
+  color: #4A5568; /* Un gris un poco más claro */
+}
+
+.buttonContainer {
+  margin-top: 32px;
+}
+
+/* --- Estado de Error --- */
+.errorBox {
+  width: 100%;
+  max-width: 1100px;
+  background-color: rgba(245, 101, 101, 0.1); /* Fondo Error 10% */
+  border: 1px solid var(--error);
+  color: var(--text);
+  padding: 16px;
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  font-family: var(--font-body);
+}
+
+.errorBox strong {
+  color: #C53030; /* Rojo oscuro para el "Error:" */
+}

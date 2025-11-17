@@ -1,0 +1,62 @@
+/* Usamos :root para variables, aunque CSS Modules las encapsula. 
+   Es buena práctica si queremos compartirlas globalmente más adelante. */
+:root {
+  --primary: #2A9D8F;
+  --secondary: #722F37;
+  --background: #F5F2EA;
+  --text: #2D3748;
+  --radius: 8px;
+  --font-header: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Espaciado: 16px vertical, 64px horizontal */
+  padding: 16px 64px; 
+  background-color: var(--background);
+  /* Sombra sutil para dar profundidad */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: var(--font-body);
+}
+
+.logo {
+  font-family: var(--font-header);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  /* Espaciado de 32px entre la lista y el botón CTA */
+  gap: 32px;
+}
+
+.navList {
+  display: flex;
+  /* Espaciado de 32px entre cada item de navegación */
+  gap: 32px; 
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 12px; /* Ley de Fitts: target generoso */
+  border-radius: var(--radius);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Feedback inmediato en hover (Principio de Feedback) */
+.navLink:hover {
+  background-color: rgba(45, 55, 72, 0.05); /* Gris de texto al 5% */
+}

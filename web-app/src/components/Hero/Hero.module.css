@@ -1,0 +1,56 @@
+/* Usamos las fuentes definidas en index.css */
+/* --font-header: 'Poppins', sans-serif; */
+/* --font-body: 'Inter', sans-serif; */
+/* --text: #2D3748; */
+
+.heroContainer {
+  display: flex;
+  justify-content: center; /* Centramos el contenido */
+  align-items: center;
+  width: 100%;
+  /* Espaciado generoso: 64px vertical */
+  padding: 64px 64px; 
+  background-color: var(--background);
+  box-sizing: border-box; /* Asegura que el padding no rompa el layout */
+  
+  /* (Optimización futura): 
+     Si tuviéramos imagen, cambiaríamos a:
+     justify-content: space-between; 
+  */
+}
+
+.contentWrapper {
+  /* Limitamos el ancho del texto para legibilidad */
+  max-width: 800px;
+  text-align: center; /* Centramos el texto y botones */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-header);
+  font-size: 56px; /* Tamaño impactante */
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.2; /* Espacio entre líneas */
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text);
+  /* Espaciado de 24px bajo el título */
+  margin-top: 24px;
+  margin-bottom: 0;
+  line-height: 1.6;
+  max-width: 650px; /* Hacemos el subtítulo un poco más angosto */
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 16px; /* Espacio entre botones */
+  /* Espaciado de 32px bajo el subtítulo */
+  margin-top: 32px;
+}

@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Fuente base */
+  background-color: #F5F2EA; /* Fondo beige global */
+  color: #2D3748; /* Texto gris oscuro global */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

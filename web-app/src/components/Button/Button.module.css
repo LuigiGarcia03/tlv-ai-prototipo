@@ -1,0 +1,71 @@
+/* :root (del index.css) ya nos da las variables, 
+   pero las pongo aquí comentadas para referencia rápida */
+/* --primary: #2A9D8F; */
+/* --secondary: #722F37; */
+/* --radius: 8px; */
+/* --font-body: 'Inter', sans-serif; */
+
+/* .base contiene TODOS los estilos compartidos */
+.base {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  /* Espaciado: 12px vertical, 24px horizontal */
+  padding: 12px 24px;
+  /* Consistencia en bordes */
+  border-radius: var(--radius);
+  /* Sombra sutil */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Transición suave para feedback */
+  transition: all 0.2s ease;
+}
+
+/* --- VARIANTE PRIMARY (Turquesa) --- */
+.primary {
+  background-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.primary:hover {
+  background-color: #248a7f; /* Tono más oscuro */
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.primary:active {
+  /* Feedback táctil inmediato */
+  transform: translateY(1px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- VARIANTE SECONDARY (Burdeos) --- */
+.secondary {
+  background-color: var(--secondary);
+  color: #FFFFFF;
+}
+
+.secondary:hover {
+  background-color: #5f272d; /* Tono más oscuro */
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.secondary:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- ESTADO DISABLED (Crucial para UX) --- */
+.base:disabled {
+  background-color: #A0AEC0; /* Un gris neutro */
+  color: #E2E8F0;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}

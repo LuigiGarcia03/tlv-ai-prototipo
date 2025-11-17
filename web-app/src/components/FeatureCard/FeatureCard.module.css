@@ -1,0 +1,50 @@
+/* --text: #2D3748; */
+/* --primary: #2A9D8F; */
+/* --radius: 8px; */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centramos el contenido */
+  text-align: center;
+  padding: 24px;
+  background-color: #FFFFFF; /* Damos un fondo blanco para que resalte */
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra más sutil */
+}
+
+.iconWrapper {
+  /* Contenedor del icono */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  background-color: rgba(42, 157, 143, 0.1); /* Tono turquesa al 10% */
+  border-radius: 50%; /* Círculo perfecto */
+  margin-bottom: 24px;
+}
+
+/* El icono (que vendrá de react-icons) heredará este color */
+.iconWrapper svg {
+  color: var(--primary);
+  width: 32px;
+  height: 32px;
+}
+
+.title {
+  font-family: var(--font-header);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.6;
+  margin-top: 16px; /* Espacio de 16px desde el título */
+  margin-bottom: 0;
+}

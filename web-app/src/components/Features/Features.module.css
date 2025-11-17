@@ -1,0 +1,55 @@
+.featuresSection {
+  width: 100%;
+  /* Espaciado generoso (64px) arriba y abajo */
+  padding: 64px 64px;
+  /* Alternamos el color de fondo para crear separación visual */
+  /* Hero era beige, este será blanco (o un gris muy claro) */
+  background-color: #FFFFFF; 
+  box-sizing: border-box;
+}
+
+.contentWrapper {
+  /* Mantenemos el mismo ancho máximo que el Hero por consistencia */
+  max-width: 1100px; 
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-family: var(--font-header);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  text-align: center;
+}
+
+.sectionSubtitle {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text);
+  margin-top: 16px;
+  margin-bottom: 48px; /* Espacio generoso antes de las cards */
+  max-width: 600px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  /* Crea 3 columnas de tamaño igual (1fr) */
+  grid-template-columns: repeat(3, 1fr);
+  /* Espacio de 32px entre las columnas y filas */
+  gap: 32px;
+  width: 100%;
+}
+
+/* (Recomendación Futura para Responsive)
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr; // Apila las columnas
+    }
+  }
+*/
