@@ -1,36 +1,35 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; 
 import styles from './Header.module.css';
-import Button from '../Button/Button'; // <-- 1. IMPORTAR
+import Button from '../Button/Button';
 
 interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = () => {
-  const navItems = [
-    { label: 'Características', href: '#features' },
-    { label: 'App Desktop', href: '#desktop-app' },
-    { label: 'Contacto', href: '#contact' },
-  ];
-
   return (
     <header className={styles.headerContainer}>
       <div className={styles.logoContainer}>
-        <a href="/" className={styles.logo}>
+        {/* Cambiamos 'a' por 'Link' para navegación interna instantánea */}
+        <Link to="/" className={styles.logo}>
           Tlv AI 🎙
-        </a>
+        </Link>
       </div>
       
       <nav aria-label="Navegación principal" className={styles.nav}>
         <ul className={styles.navList}>
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <a href={item.href} className={styles.navLink}>
-                {item.label}
-              </a>
-            </li>
-          ))}
+          <li>
+            <Link to="/" className={styles.navLink}>Inicio</Link>
+          </li>
+          <li>
+            <Link to="/about" className={styles.navLink}>Nosotros</Link>
+          </li>
+          {/* Estos son anclas dentro de la Home, requieren manejo especial o condicional
+              Por ahora, si estás en '/about', estos links te llevarán a la home */}
+          <li>
+            <Link to="/#features" className={styles.navLink}>Características</Link>
+          </li>
         </ul>
         
-        {/* 2. REEMPLAZAR EL 'a' POR NUESTRO COMPONENTE */}
         <Button variant="primary" href="#download">
           Probar Traducción
         </Button>

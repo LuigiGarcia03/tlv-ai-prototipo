@@ -1,21 +1,31 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header/Header';
-import { Hero } from './components/Hero/Hero';
-import { Features } from './components/Features/Features';
-import { DesktopCTA } from './components/DesktopCTA/DesktopCTA'; // 1. Importar
-import { Footer } from './components/Footer/Footer';             // 2. Importar
+import { Footer } from './components/Footer/Footer';
+
+// Importamos nuestras páginas
+import { Home } from './pages/Home';
+import { About } from './components/About/About'; // Usamos el componente que creamos antes
 
 function App() {
   return (
-    <div className="appContainer">
-      <Header />
-      <main>
-        <Hero />
-        <Features />
-        {/* Reemplazamos TranslationBox por DesktopCTA */}
-        <DesktopCTA /> 
-      </main>
-      <Footer /> {/* 3. Añadir al final */}
-    </div>
+    <Router>
+      <div className="appContainer">
+        {/* El Header aparece en TODAS las páginas */}
+        <Header />
+        
+        <main>
+          {/* Aquí el contenido cambia según la URL */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            {/* Puedes agregar más rutas aquí en el futuro */}
+          </Routes>
+        </main>
+
+        {/* El Footer también aparece en TODAS las páginas */}
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

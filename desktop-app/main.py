@@ -1,216 +1,204 @@
 import tkinter as tk
-from tkinter import ttk, font, messagebox
+from tkinter import ttk, messagebox
 import os
-import threading # <-- 1. Importar threading
+import sys
+import threading
 from dotenv import load_dotenv
+from PIL import Image, ImageTk
 
-# 2. IMPORTAR NUESTRO CEREBRO (Ahora sí lo usamos)
+# Importamos nuestro módulo de traducción
 from gemini_translator import translate_text
 
-# --- CONSTANTES DE DISEÑO (Sin cambios) ---
-COLOR_FONDO = "#F5F2EA"          #
-COLOR_PRIMARIO = "#2A9D8F"       #
-COLOR_PRIMARIO_OSCURO = "#238276" #
-COLOR_TEXTO = "#2D3748"           #
-COLOR_BORDE = "#CBD5E0"          #
-COLOR_ERROR = "#F56565"         #
-FONT_PRINCIPAL = "Inter"        #
-FONT_SECUNDARIA = "Poppins"     #
+# --- CONSTANTES DE DISEÑO ---
+COLOR_FONDO = "#F5F2EA"          # Beige corporativo
+COLOR_PRIMARIO = "#2A9D8F"       # Turquesa
+COLOR_PRIMARIO_OSCURO = "#238276"
+COLOR_TEXTO = "#2D3748"          # Gris oscuro
+COLOR_BORDE = "#CBD5E0"
+COLOR_ERROR = "#F56565"
+FONT_PRINCIPAL = "Inter"
+FONT_BRAND = "Poppins"
 
+# --- HELPER: Rutas ---
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
-# --- 3. Lógica de Traducción (La conexión) ---
+# --- HELPER: Mover Ventana (Custom Title Bar) ---
+def start_move(event):
+    event.widget.winfo_toplevel().x = event.x
+    event.widget.winfo_toplevel().y = event.y
 
-def handle_translate_click(
-    input_widget: tk.Text, 
-    output_widget: tk.Text,
-    btn_widget: ttk.Button,
-    src_lang_widget: ttk.Combobox,
-    tgt_lang_widget: ttk.Combobox
-):
-    """
-    Función 'wrapper' que se llama al presionar el botón.
-    Inicia el trabajo de traducción en un hilo separado.
-    """
-    # 1. Obtener datos de la UI
-    input_text = input_widget.get("1.0", "end-1c") # "1.0" = línea 1, char 0. "end-1c" = fin menos 1 char (evita newline)
+def do_move(event):
+    x = event.widget.winfo_x() + (event.x - event.widget.winfo_toplevel().x)
+    y = event.widget.winfo_y() + (event.y - event.widget.winfo_toplevel().y)
+    event.widget.winfo_toplevel().geometry(f"+{x}+{y}")
+
+# --- LÓGICA DE TRADUCCIÓN ---
+def handle_translate_click(input_widget, output_widget, btn_widget, src_lang_widget, tgt_lang_widget):
+    input_text = input_widget.get("1.0", "end-1c")
     src_lang = src_lang_widget.get()
     tgt_lang = tgt_lang_widget.get()
 
-    # Validación simple (UX)
     if not input_text.strip():
-        messagebox.showwarning("Entrada Vacía", "Por favor, escribe el texto que deseas traducir.")
+        messagebox.showwarning("Entrada Vacía", "Por favor, escribe el texto a traducir.")
         return
 
-    # 2. Actualizar UI al estado "Cargando" (Feedback Inmediato)
     btn_widget.config(state="disabled", text="Traduciendo...")
-    output_widget.config(state="normal") # Habilitar para escribir
+    output_widget.config(state="normal")
     output_widget.delete("1.0", "end")
-    output_widget.insert("1.0", "Traduciendo, por favor espera...")
+    output_widget.insert("1.0", "Conectando con Tlv AI...")
     
-    # 3. Iniciar el hilo "bulletproof"
-    # 'daemon=True' asegura que el hilo se cierre si la app principal se cierra
     threading.Thread(
         target=translate_task, 
         args=(input_text, src_lang, tgt_lang, output_widget, btn_widget),
         daemon=True
     ).start()
 
-
-def translate_task(
-    text: str, 
-    src: str, 
-    tgt: str, 
-    output_widget: tk.Text, 
-    btn_widget: ttk.Button
-):
-    """
-    Esta función se ejecuta en el hilo secundario.
-    Aquí es donde llamamos a la API (la parte lenta).
-    """
+def translate_task(text, src, tgt, output_widget, btn_widget):
     try:
-        # 4. Llamar al "cerebro"
         translation = translate_text(text, src, tgt)
-        
-        # 5. Actualizar la UI (de forma segura)
-        # Tkinter no es 100% "thread-safe", pero para una sola
-        # inserción de texto, esto es generalmente aceptable.
-        # Una solución más robusta usaría una 'queue'.
         output_widget.delete("1.0", "end")
         output_widget.insert("1.0", translation)
-
     except Exception as e:
-        # 6. Manejo de Errores (RNF-002)
         output_widget.delete("1.0", "end")
         output_widget.insert("1.0", f"Error: {e}", "error_tag")
-        messagebox.showerror("Error de Traducción", f"Ocurrió un error al contactar la API: {e}")
-    
     finally:
-        # 7. Restaurar la UI (Siempre se ejecuta)
-        btn_widget.config(state="normal", text="Traducir ➔")
-        output_widget.config(state="disabled") # Volver a solo lectura
+        btn_widget.config(state="normal", text="TRADUCIR AHORA")
+        output_widget.config(state="disabled")
 
+# --- UI PRINCIPAL ---
 def main():
-    """Punto de entrada principal de la aplicación Tlv AI Desktop."""
     load_dotenv()
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        messagebox.showerror("Error de API", "No se encontró la GEMINI_API_KEY en el archivo .env")
-        return
+    # Validación simple de API (Opcional, para no bloquear la demo visual)
+    # if not os.getenv("GEMINI_API_KEY"): messagebox.showwarning(...)
 
-    # --- 1. Configuración de la Ventana Principal (Sin cambios) ---
     root = tk.Tk()
-    root.title("Tlv AI Desktop App")
-    root.geometry("850x650")
+    root.title("Tlv AI")
+    root.geometry("950x650")
     root.configure(bg=COLOR_FONDO)
-    root.resizable(False, False)
+    
+    # 1. ELIMINAR BARRA NATIVA DE WINDOWS
+    root.overrideredirect(True) 
 
-    # --- 2. Definición de Fuentes (Sin cambios) ---
-    font_bold_16 = (FONT_PRINCIPAL, 16, "bold")
-    font_normal_12 = (FONT_PRINCIPAL, 12)
-    font_normal_10 = (FONT_PRINCIPAL, 10)
+    # --- 2. BARRA DE TÍTULO PERSONALIZADA (Browser Style) ---
+    title_bar = tk.Frame(root, bg=COLOR_FONDO, relief="flat", bd=0)
+    title_bar.pack(fill="x", side="top", ipady=5)
 
-    # --- 3. Configuración de Estilos TTK (Sin cambios) ---
-    style = ttk.Style(root)
+    # Permitir arrastrar la ventana desde la barra
+    title_bar.bind("<ButtonPress-1>", start_move)
+    title_bar.bind("<B1-Motion>", do_move)
+
+    # Lado Izquierdo: Logo + Título
+    brand_frame = tk.Frame(title_bar, bg=COLOR_FONDO)
+    brand_frame.pack(side="left", padx=10)
+    # Importante: Bindear movimiento también al frame interno y etiquetas para que sea fácil arrastrar
+    brand_frame.bind("<ButtonPress-1>", start_move)
+    brand_frame.bind("<B1-Motion>", do_move)
+
+    try:
+        logo_path = resource_path(os.path.join("assets", "logo-Tlv-AI-1.ico"))
+        pil_image = Image.open(logo_path).resize((24, 24), Image.LANCZOS)
+        logo_photo = ImageTk.PhotoImage(pil_image)
+        
+        lbl_logo = tk.Label(brand_frame, image=logo_photo, bg=COLOR_FONDO)
+        lbl_logo.image = logo_photo
+        lbl_logo.pack(side="left", padx=(0, 10))
+        lbl_logo.bind("<ButtonPress-1>", start_move)
+        lbl_logo.bind("<B1-Motion>", do_move)
+    except:
+        pass
+
+    lbl_title = tk.Label(brand_frame, text="Tlv AI Desktop", font=(FONT_BRAND, 12, "bold"), bg=COLOR_FONDO, fg=COLOR_TEXTO)
+    lbl_title.pack(side="left")
+    lbl_title.bind("<ButtonPress-1>", start_move)
+    lbl_title.bind("<B1-Motion>", do_move)
+
+    # Lado Derecho: Botón Cerrar Personalizado
+    # Función para cerrar con estilo
+    def close_app():
+        root.destroy()
+        sys.exit()
+
+    # Botón 'X' con efecto hover rojo
+    btn_close = tk.Button(title_bar, text="✕", font=("Arial", 12), bg=COLOR_FONDO, fg=COLOR_TEXTO, bd=0, command=close_app, activebackground="#E81123", activeforeground="white")
+    btn_close.pack(side="right", padx=10, fill="y")
+    
+    # Efecto Hover para el botón cerrar
+    def on_enter(e): btn_close.config(bg="#E81123", fg="white")
+    def on_leave(e): btn_close.config(bg=COLOR_FONDO, fg=COLOR_TEXTO)
+    btn_close.bind("<Enter>", on_enter)
+    btn_close.bind("<Leave>", on_leave)
+
+    # --- 3. CONTENIDO PRINCIPAL (Limpio, sin duplicados) ---
+    main_content = tk.Frame(root, bg=COLOR_FONDO)
+    main_content.pack(fill="both", expand=True, padx=20, pady=10)
+
+    # Estilos
+    style = ttk.Style()
     style.theme_use('clam')
-
     style.configure("TNotebook", background=COLOR_FONDO, borderwidth=0)
-    style.configure("TNotebook.Tab",
-        background=COLOR_FONDO,
-        foreground=COLOR_TEXTO,
-        font=font_normal_12,
-        padding=[10, 5],
-        borderwidth=0
-    )
-    style.map("TNotebook.Tab",
-        background=[("selected", COLOR_PRIMARIO)],
-        foreground=[("selected", "white")]
-    )
-
-    style.configure("TButton",
-        background=COLOR_PRIMARIO,
-        foreground="white",
-        font=font_bold_16,
-        padding=[20, 10],
-        borderwidth=0,
-        focuscolor=COLOR_PRIMARIO_OSCURO
-    )
-    style.map("TButton",
-        background=[('active', COLOR_PRIMARIO_OSCURO), ('disabled', COLOR_BORDE)] # <-- ¡Añadimos estilo 'disabled'!
-    )
-
-    style.configure("TCombobox",
-        font=font_normal_12,
-        padding=5,
-        fieldbackground="white",
-        background="white",
-        bordercolor=COLOR_BORDE,
-        arrowcolor=COLOR_TEXTO
-    )
+    style.configure("TNotebook.Tab", background=COLOR_FONDO, foreground=COLOR_TEXTO, padding=[15, 8], font=(FONT_PRINCIPAL, 10))
+    style.map("TNotebook.Tab", background=[("selected", COLOR_PRIMARIO)], foreground=[("selected", "white")])
+    style.configure("TButton", background=COLOR_PRIMARIO, foreground="white", font=(FONT_PRINCIPAL, 11, "bold"), borderwidth=0)
+    style.map("TButton", background=[('active', COLOR_PRIMARIO_OSCURO), ('disabled', COLOR_BORDE)])
     style.configure("TFrame", background=COLOR_FONDO)
+
+    # Notebook
+    notebook = ttk.Notebook(main_content)
+    notebook.pack(fill="both", expand=True)
+
+    # -- Pestaña Texto --
+    text_tab = ttk.Frame(notebook, style="TFrame")
+    notebook.add(text_tab, text='   Traducción de Texto   ')
+
+    content_frame = tk.Frame(text_tab, bg=COLOR_FONDO, padx=20, pady=20)
+    content_frame.pack(fill="both", expand=True)
+    content_frame.columnconfigure(0, weight=1)
+    content_frame.columnconfigure(1, weight=0, minsize=50)
+    content_frame.columnconfigure(2, weight=1)
+    content_frame.rowconfigure(1, weight=1)
+
+    # Inputs/Outputs
+    tk.Label(content_frame, text="Texto Original", bg=COLOR_FONDO, font=(FONT_PRINCIPAL, 11, "bold")).grid(row=0, column=0, sticky="w")
+    combo_src = ttk.Combobox(content_frame, values=["Inglés", "Español", "Francés"], state="readonly", width=15); combo_src.set("Inglés")
+    combo_src.grid(row=0, column=0, sticky="e")
     
-    # --- 4. Creación del Notebook (Sin cambios) ---
-    notebook = ttk.Notebook(root)
-    notebook.pack(pady=15, padx=20, fill="both", expand=True)
+    input_text = tk.Text(content_frame, font=(FONT_PRINCIPAL, 12), relief="flat", highlightthickness=1, highlightbackground=COLOR_BORDE, padx=10, pady=10)
+    input_text.grid(row=1, column=0, sticky="nsew", pady=10)
 
-    # --- 5. PESTAÑA 1: Traducción de Texto (RF-D-002) (Ligeros cambios) ---
-    text_tab = ttk.Frame(notebook, padding=20, style="TFrame")
-    notebook.add(text_tab, text='  Traducción de Texto  ')
+    tk.Label(content_frame, text="➔", bg=COLOR_FONDO, fg=COLOR_BORDE, font=("Arial", 24)).grid(row=1, column=1)
 
-    text_tab.columnconfigure(0, weight=1)
-    text_tab.columnconfigure(1, weight=0, minsize=50)
-    text_tab.columnconfigure(2, weight=1)
-    text_tab.rowconfigure(1, weight=1)
+    tk.Label(content_frame, text="Traducción", bg=COLOR_FONDO, font=(FONT_PRINCIPAL, 11, "bold")).grid(row=0, column=2, sticky="w")
+    combo_tgt = ttk.Combobox(content_frame, values=["Español", "Inglés", "Francés"], state="readonly", width=15); combo_tgt.set("Español")
+    combo_tgt.grid(row=0, column=2, sticky="e")
 
-    # Columna Izquierda (Entrada)
-    ttk.Label(text_tab, text="Texto de Origen", font=font_bold_16, background=COLOR_FONDO, foreground=COLOR_TEXTO).grid(row=0, column=0, sticky="w", pady=5)
-    
-    text_input = tk.Text(text_tab, font=font_normal_12, bg="white", fg=COLOR_TEXTO,
-                         relief="solid", borderwidth=1, highlightbackground=COLOR_BORDE)
-    text_input.grid(row=1, column=0, sticky="nsew", pady=5)
-    
-    combo_source_lang = ttk.Combobox(text_tab, values=["Inglés", "Español"], font=font_normal_12, state="readonly")
-    combo_source_lang.set("Inglés")
-    combo_source_lang.grid(row=2, column=0, sticky="w", pady=10)
+    output_text = tk.Text(content_frame, font=(FONT_PRINCIPAL, 12), relief="flat", highlightthickness=1, highlightbackground=COLOR_BORDE, bg="white", padx=10, pady=10, state="disabled")
+    output_text.grid(row=1, column=2, sticky="nsew", pady=10)
+    output_text.tag_configure("error_tag", foreground=COLOR_ERROR)
 
-    # Columna Derecha (Salida)
-    ttk.Label(text_tab, text="Traducción", font=font_bold_16, background=COLOR_FONDO, foreground=COLOR_TEXTO).grid(row=0, column=2, sticky="w", pady=5)
-    
-    text_output = tk.Text(text_tab, font=font_normal_12, bg="white", fg=COLOR_TEXTO,
-                          relief="solid", borderwidth=1, highlightbackground=COLOR_BORDE, state="disabled")
-    text_output.grid(row=1, column=2, sticky="nsew", pady=5)
-    
-    # Añadimos un tag de estilo para el texto de error
-    text_output.tag_configure("error_tag", foreground=COLOR_ERROR) #
-    
-    combo_target_lang = ttk.Combobox(text_tab, values=["Español", "Inglés"], font=font_normal_12, state="readonly")
-    combo_target_lang.set("Español")
-    combo_target_lang.grid(row=2, column=2, sticky="w", pady=10)
+    btn_translate = ttk.Button(content_frame, text="TRADUCIR AHORA")
+    btn_translate.config(command=lambda: handle_translate_click(input_text, output_text, btn_translate, combo_src, combo_tgt))
+    btn_translate.grid(row=2, column=0, columnspan=3, pady=10, ipadx=30, ipady=5)
 
-    # Botón Central de Traducción
-    translate_button = ttk.Button(text_tab, text="Traducir ➔", style="TButton")
-    
-    # --- 8. ASIGNAR LA NUEVA FUNCIÓN 'wrapper' ---
-    translate_button.config(command=lambda: handle_translate_click(
-        text_input, text_output, translate_button, combo_source_lang, combo_target_lang
-    ))
-    translate_button.grid(row=3, column=0, columnspan=3, pady=20)
+    # -- Pestañas Placeholder --
+    def create_placeholder(title, icon):
+        f = ttk.Frame(notebook, style="TFrame")
+        notebook.add(f, text=f'   {title}   ')
+        c = tk.Frame(f, bg=COLOR_FONDO)
+        c.place(relx=0.5, rely=0.5, anchor="center")
+        tk.Label(c, text=icon, font=("Segoe UI Emoji", 48), bg=COLOR_FONDO).pack()
+        tk.Label(c, text="Próximamente", font=(FONT_BRAND, 16, "bold"), bg=COLOR_FONDO, fg=COLOR_TEXTO).pack()
 
+    create_placeholder("Traducción de Audio", "🎙️")
+    create_placeholder("Traducción de Video", "🎬")
 
-    # --- 6. PESTAÑAS SIMULADAS (RF-D-003) (Sin cambios) ---
-    audio_tab = ttk.Frame(notebook, padding=20, style="TFrame")
-    notebook.add(audio_tab, text='  Traducción de Audio  ')
-    ttk.Label(audio_tab, text="Función en desarrollo.", font=font_bold_16, background=COLOR_FONDO, foreground=COLOR_TEXTO).pack(pady=50)
-    ttk.Label(audio_tab, text="Próximamente en Tlv AI v2.0", font=font_normal_12, background=COLOR_FONDO, foreground=COLOR_TEXTO).pack()
-    ttk.Button(audio_tab, text="Subir Archivo de Audio", state="disabled").pack(pady=20)
+    # Footer
+    tk.Label(root, text=" Tlv AI Desktop v1.0 | Prototipo Académico ", bg="#E2E8F0", fg="#718096", font=(FONT_PRINCIPAL, 8), anchor="e").pack(side="bottom", fill="x")
 
-    video_tab = ttk.Frame(notebook, padding=20, style="TFrame")
-    notebook.add(video_tab, text='  Traducción de Video  ')
-    ttk.Label(video_tab, text="Próximamente en Tlv AI v2.0", font=font_normal_12, background=COLOR_FONDO, foreground=COLOR_TEXTO).pack()
-    ttk.Label(video_tab, text="Próximamente en Tlv AI v2.0", font=font_normal_12, background=COLOR_FONDO, foreground=COLOR_TEXTO).pack()
-    ttk.Button(video_tab, text="Subir Video", state="disabled").pack(pady=20)
-
-
-    # --- 7. Iniciar el loop principal (Sin cambios) ---
     root.mainloop()
 
 if __name__ == "__main__":

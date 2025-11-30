@@ -1,0 +1,157 @@
+/* About.module.css - Diseño Corporativo Premium */
+
+.section {
+  padding: 80px 64px;
+  background-color: #FFFFFF;
+  border-top: 1px solid var(--gray-300);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* --- Encabezado de Sección --- */
+.header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.title {
+  font-family: var(--font-header, 'Poppins', sans-serif);
+  font-size: 42px;
+  color: #2D3748; /* --text */
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 18px;
+  color: #718096; /* --gray-500 */
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.sectionHeader {
+  font-family: var(--font-header, 'Poppins', sans-serif); /* Fuente oficial de títulos */
+  font-size: 32px; /* Tamaño grande pero no gigante */
+  font-weight: 700; /* Negrita para jerarquía */
+  color: #2D3748; /* --text (Gris oscuro) */
+  text-align: center;
+  margin-bottom: 48px; /* Espacio generoso debajo */
+  margin-top: 0;
+  position: relative; /* Para el adorno opcional */
+  letter-spacing: -0.5px; /* Un toque moderno */
+}
+
+.sectionHeader::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: var(--primary, #2A9D8F);
+  margin: 16px auto 0;
+  border-radius: 2px;
+}
+
+.valuesSection {
+  margin-bottom: 80px;
+}
+
+/* --- Grid Misión / Visión --- */
+.mvGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 80px;
+}
+
+.card {
+  background-color: #F5F2EA; /* --background beige */
+  padding: 40px;
+  border-radius: 12px; /* --radius-lg */
+  border-left: 4px solid #2A9D8F; /* --primary */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.cardTitle {
+  font-family: var(--font-header);
+  font-size: 24px;
+  color: #2A9D8F; /* --primary */
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cardText {
+  font-family: var(--font-body);
+  color: #2D3748;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* --- Valores Corporativos --- */
+.valuesSection {
+  margin-bottom: 80px;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.valueItem {
+  text-align: center;
+  padding: 24px;
+  border: 1px solid #CBD5E0; /* --gray-300 */
+  border-radius: 8px;
+}
+
+.valueIcon {
+  font-size: 32px;
+  color: #722F37; /* --secondary */
+  margin-bottom: 16px;
+  display: block;
+}
+
+.valueName {
+  font-weight: 600;
+  color: #2D3748;
+}
+
+/* --- Análisis FODA (Diseño Cuadrante) --- */
+.fodaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.fodaItem {
+  padding: 24px;
+  border-radius: 8px;
+  background-color: #F7FAFC;
+}
+
+.fodaHeader {
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: block;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* Colores semánticos para FODA */
+.strengths { color: #2A9D8F; border-top: 3px solid #2A9D8F; } /* Fortalezas */
+.weaknesses { color: #F56565; border-top: 3px solid #F56565; } /* Debilidades */
+.opportunities { color: #4299E1; border-top: 3px solid #4299E1; } /* Oportunidades */
+.threats { color: #ED8936; border-top: 3px solid #ED8936; } /* Amenazas */
