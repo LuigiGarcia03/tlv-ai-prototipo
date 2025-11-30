@@ -1,38 +1,55 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; 
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
 import Button from '../Button/Button';
+import logoImg from '../../assets/logo Tlv AI 1.png'; // Asegúrate de que la ruta sea correcta
+import { FiMenu, FiX } from 'react-icons/fi';
 
-interface HeaderProps {}
+export const Header: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-export const Header: React.FC<HeaderProps> = () => {
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
+
   return (
     <header className={styles.headerContainer}>
-      <div className={styles.logoContainer}>
-        {/* Cambiamos 'a' por 'Link' para navegación interna instantánea */}
-        <Link to="/" className={styles.logo}>
-          Tlv AI 🎙
-        </Link>
-      </div>
       
-      <nav aria-label="Navegación principal" className={styles.nav}>
+      {/* 1. Logo (Imagen) */}
+      <Link to="/" className={styles.logoLink} onClick={closeMenu}>
+        <img src={logoImg} alt="Tlv AI Logo" className={styles.logoImage} />
+        {/* Opcional: Si quieres mantener el texto al lado, descomenta esto: */}
+        {/* <span className={styles.logoText}>Tlv AI</span> */}
+      </Link>
+
+      {/* 2. Botón Hamburguesa (Solo visible en Móvil) */}
+      <button 
+        className={styles.hamburger} 
+        onClick={toggleMenu}
+        aria-label="Abrir menú"
+      >
+        {isMenuOpen ? <FiX /> : <FiMenu />}
+      </button>
+      
+      {/* 3. Navegación (Desktop + Mobile Overlay) */}
+      <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
         <ul className={styles.navList}>
           <li>
-            <Link to="/" className={styles.navLink}>Inicio</Link>
+            <Link to="/" className={styles.navLink} onClick={closeMenu}>Inicio</Link>
           </li>
           <li>
-            <Link to="/about" className={styles.navLink}>Nosotros</Link>
+            <Link to="/about" className={styles.navLink} onClick={closeMenu}>Nosotros</Link>
           </li>
-          {/* Estos son anclas dentro de la Home, requieren manejo especial o condicional
-              Por ahora, si estás en '/about', estos links te llevarán a la home */}
           <li>
-            <Link to="/#features" className={styles.navLink}>Características</Link>
+            {/* Nota: Para anchors internos en React Router a veces es mejor usar hash links directos si estás en home */}
+            <a href="/#features" className={styles.navLink} onClick={closeMenu}>Características</a>
           </li>
         </ul>
         
-        <Link to="/demo">
-          <Button variant="primary">Probar Traducción Web</Button>
-        </Link>
+        <div className={styles.ctaWrapper} onClick={closeMenu}>
+          <Link to="/demo">
+            <Button variant="primary">Probar Traducción Web</Button>
+          </Link>
+        </div>
       </nav>
     </header>
   );

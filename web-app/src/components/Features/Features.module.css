@@ -46,10 +46,22 @@
   width: 100%;
 }
 
-/* (Recomendación Futura para Responsive)
-  @media (max-width: 900px) {
-    .grid {
-      grid-template-columns: 1fr; // Apila las columnas
-    }
+@media (max-width: 900px) {
+  .featuresSection {
+    padding: 48px 24px;
   }
-*/
+
+  .sectionTitle {
+    font-size: 32px; /* Letra más pequeña */
+  }
+
+  .sectionSubtitle {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr; /* Una sola columna */
+    gap: 24px;
+  }
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './DesktopCTA.module.css';
 import Button from '../Button/Button';
 import { FiDownload, FiGithub } from 'react-icons/fi'; // Iconos relevantes
+import desktopAppImg from '../../assets/Desktop-App-img.png';
 
 export const DesktopCTA: React.FC = () => {
   return (
@@ -40,9 +41,12 @@ export const DesktopCTA: React.FC = () => {
               <span className={styles.dot}></span>
               <span className={styles.dot}></span>
             </div>
-            <div className={styles.mockupBody}>
-              <p>Wireframe de la App Desktop</p>
-              <p>[Tlv AI Desktop App]</p>
+            <div className={styles.mockupWrapper}>
+              <img 
+                src={desktopAppImg} 
+                alt="Captura de pantalla de la interfaz de escritorio de Tlv AI" 
+                className={styles.desktopImage}
+              />
             </div>
           </div>
         </div>

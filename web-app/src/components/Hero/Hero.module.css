@@ -54,3 +54,21 @@
   /* Espaciado de 32px bajo el subtítulo */
   margin-top: 32px;
 }
+
+@media (max-width: 768px) {
+  .heroContainer {
+    padding: 48px 24px; /* Menos padding lateral */
+    text-align: center;
+  }
+
+  .title {
+    /* Usamos clamp para que escale fluido entre 32px y 56px */
+    font-size: clamp(32px, 8vw, 56px); 
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    margin-top: 16px;
+  }
+}

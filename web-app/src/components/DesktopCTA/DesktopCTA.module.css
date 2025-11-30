@@ -58,17 +58,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.mockupPlaceholder {
-  width: 100%;
-  max-width: 500px;
-  height: 350px;
-  background-color: var(--background); /* Fondo beige */
-  border: 1px solid var(--gray-300); /* Borde sutil */
-  border-radius: var(--radius-lg); /* Borde de 12px */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  max-width: 100%; 
 }
 
 .mockupHeader {
@@ -108,6 +98,26 @@
   transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
 }
 
+.desktopImage {
+  width: 100%; /* Que ocupe el ancho disponible del wrapper */
+  height: auto; /* Mantener proporción original */
+  max-width: 650px; /* Evitar que se haga gigantesca en pantallas muy anchas */
+  
+  /* Estética profesional */
+  border-radius: 16px; /* Bordes redondeados consistentes con el diseño */
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2); /* Sombra profunda para efecto 3D */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil para definición */
+  
+  /* Transición suave por si quieres añadir efecto hover luego */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Opcional: Efecto al pasar el mouse sobre la imagen */
+.desktopImage:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
 /* Responsive: En móviles, una sola columna */
 @media (max-width: 968px) {
   .container {
@@ -129,5 +139,44 @@
     transform: none; /* Quitamos el efecto 3D en móvil para simplificar */
     max-width: 80%;
     margin: 0 auto;
+  }
+
+  .ctaSection {
+    padding: 48px 24px;
+  }
+
+  .contentWrapper {
+    grid-template-columns: 1fr; /* Apilado vertical */
+    gap: 48px;
+    text-align: center;
+  }
+
+  .textWrapper {
+    align-items: center; /* Centrar textos */
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    margin: 16px 0 32px 0;
+  }
+
+  .buttonGroup {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* IMPORTANTE: Orden visual */
+  .mockupWrapper {
+    order: 2; /* Imagen abajo */
+    width: 100%;
+  }
+  
+  .mockupPlaceholder {
+    height: 250px; /* Un poco más pequeño en altura para móvil */
+    max-width: 100%; /* Que no se salga */
   }
 }

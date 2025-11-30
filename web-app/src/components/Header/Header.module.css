@@ -8,39 +8,58 @@
   --radius: 8px;
   --font-header: 'Poppins', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --header-height: 80px;
 }
 
 .headerContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* Espaciado: 16px vertical, 64px horizontal */
-  padding: 16px 64px; 
+  padding: 16px 64px;
   background-color: var(--background);
-  /* Sombra sutil para dar profundidad */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-family: var(--font-body);
+  position: relative;
+  z-index: 1000;
+  height: var(--header-height);
+  box-sizing: border-box;
 }
 
-.logo {
-  font-family: var(--font-header);
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--text);
+/* LOGO */
+.logoLink {
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
+.logoImage {
+  height: 48px; /* Tamaño controlado */
+  width: auto;
+  object-fit: contain;
+}
+
+/* HAMBURGUESA (Por defecto oculto) */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--text);
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* NAVEGACIÓN DESKTOP */
 .nav {
   display: flex;
   align-items: center;
-  /* Espaciado de 32px entre la lista y el botón CTA */
   gap: 32px;
 }
 
 .navList {
   display: flex;
-  /* Espaciado de 32px entre cada item de navegación */
-  gap: 32px; 
+  gap: 32px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -59,4 +78,53 @@
 /* Feedback inmediato en hover (Principio de Feedback) */
 .navLink:hover {
   background-color: rgba(45, 55, 72, 0.05); /* Gris de texto al 5% */
+}
+
+/* --- RESPONSIVE MOBILE (< 768px) --- */
+@media (max-width: 768px) {
+  .headerContainer {
+    padding: 16px 24px; /* Padding reducido */
+  }
+
+  .hamburger {
+    display: block; /* Mostrar icono */
+  }
+
+  /* Transformar el NAV en un menú desplegable/overlay */
+  .nav {
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    background-color: var(--background);
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 0;
+    gap: 24px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    
+    /* Estado Cerrado: Oculto */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Estado Abierto */
+  .navOpen {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .navList {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .navLink {
+    font-size: 18px; /* Más grande para el dedo */
+    padding: 12px 24px;
+  }
 }
