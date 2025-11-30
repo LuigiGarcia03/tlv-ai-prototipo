@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './About.module.css';
 import { 
-  FiTarget, FiEye, FiActivity, FiDollarSign, 
+  FiTarget, FiEye, FiActivity,
   FiShield, FiTrendingUp, FiUsers, FiAward, 
   FiBox, FiGlobe, 
   FiBookOpen,
