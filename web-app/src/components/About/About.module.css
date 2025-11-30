@@ -1,157 +1,527 @@
-/* About.module.css - Diseño Corporativo Premium */
+/* About.module.css - Diseño Senior */
 
-.section {
-  padding: 80px 64px;
-  background-color: #FFFFFF;
-  border-top: 1px solid var(--gray-300);
+/* --- Contenedor Principal --- */
+.pageWrapper {
+  width: 100%;
+  background-color: #FAFAFA; /* Un blanco casi imperceptiblemente gris para modernidad */
+  overflow-x: hidden;
 }
+
+/* --- Secciones tipo "Slide" --- */
+.slideSection {
+  min-height: 90vh; /* Ocupa casi toda la pantalla */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 24px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Fondos alternados para ritmo visual */
+.bgLight { background-color: #FFFFFF; }
+.bgBeige { background-color: #F5F2EA; }
+.bgDark { background-color: #2D3748; color: #FFFFFF; } /* Un toque oscuro para contraste */
 
 .container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
-/* --- Encabezado de Sección --- */
-.header {
-  text-align: center;
-  margin-bottom: 64px;
-}
-
-.title {
-  font-family: var(--font-header, 'Poppins', sans-serif);
-  font-size: 42px;
-  color: #2D3748; /* --text */
+/* --- Tipografía --- */
+.superTitle {
+  font-family: var(--font-header);
+  /* Aumentamos dramáticamente el tamaño: Min 4rem, Max 8rem */
+  font-size: clamp(4rem, 10vw, 8rem); 
+  font-weight: 900; /* Más grueso */
+  line-height: 1;
+  color: var(--primary);
   margin-bottom: 16px;
+  letter-spacing: -2px; /* Más pegadito, se ve más moderno */
+  text-align: center; /* Asegura el centrado */
 }
 
-.subtitle {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 18px;
-  color: #718096; /* --gray-500 */
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
+/* AGREGAR: Nueva clase específica para el Hero que reduce la altura */
+.heroHeight {
+  min-height: 50vh; /* Antes era 90vh (casi pantalla completa), ahora es la mitad */
+  padding: 60px 24px; /* Un poco menos de padding vertical */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centra el contenido horizontalmente */
+  text-align: center; /* Centra el texto interno */
 }
 
 .sectionHeader {
-  font-family: var(--font-header, 'Poppins', sans-serif); /* Fuente oficial de títulos */
-  font-size: 32px; /* Tamaño grande pero no gigante */
-  font-weight: 700; /* Negrita para jerarquía */
-  color: #2D3748; /* --text (Gris oscuro) */
-  text-align: center;
-  margin-bottom: 48px; /* Espacio generoso debajo */
-  margin-top: 0;
-  position: relative; /* Para el adorno opcional */
-  letter-spacing: -0.5px; /* Un toque moderno */
+  font-family: var(--font-header);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 48px;
+  position: relative;
+  display: inline-block;
 }
 
+/* Adorno sutil bajo el título */
 .sectionHeader::after {
   content: '';
   display: block;
-  width: 60px;
+  width: 40%;
   height: 4px;
-  background-color: var(--primary, #2A9D8F);
-  margin: 16px auto 0;
+  background: var(--secondary);
+  margin-top: 8px;
   border-radius: 2px;
 }
 
-.valuesSection {
-  margin-bottom: 80px;
+.leadText {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto; /* Centra el bloque de texto */
+  opacity: 0.9;
+  text-align: center;
 }
 
-/* --- Grid Misión / Visión --- */
-.mvGrid {
+/* Sección compacta para Misión/Visión */
+.compactSection {
+  padding: 40px 24px; /* Reducido de 80px a 40px */
+  min-height: auto; /* Quitamos la altura mínima forzada */
+  display: block; /* Quitamos flex center vertical para que suba */
+}
+
+.tightHeader {
+  margin-bottom: 24px !important; /* Forzamos la reducción de espacio */
+}
+
+.bgHexagons {
+  background-color: #ffffff;
+  /* Patrón SVG codificado en base64 para no cargar archivos extra. 
+     Es un patrón de líneas hexagonales color turquesa con muy baja opacidad. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%232A9D8F' fill-opacity='0.05' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-7.5L27.99 34H28v2.31h-.01L17 42.65V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 10px auto; /* Tamaño del patrón */
+}
+
+/* --- Grid Layouts (Bento Box Style) --- */
+.bentoGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  margin-bottom: 80px;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
 }
 
+/* Cartas Genéricas */
 .card {
-  background-color: #F5F2EA; /* --background beige */
-  padding: 40px;
-  border-radius: 12px; /* --radius-lg */
-  border-left: 4px solid #2A9D8F; /* --primary */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease;
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 .card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-.cardTitle {
+/* --- Misión y Visión (Layout Asimétrico) --- */
+.missionCard { grid-column: span 7; background: var(--primary); color: white; }
+.visionCard { grid-column: span 5; background: var(--background); border: 2px solid var(--primary); }
+
+@media (max-width: 768px) {
+  .missionCard, .visionCard { grid-column: span 12; }
+}
+
+/* Producto/Valores */
+.ultraCompactSection {
+  padding: 80px 24px; /* Mismo padding reducido que la sección anterior */
+  background-color: #F5F2EA; /* Fondo beige consistente */
+}
+
+.columnTitle {
   font-family: var(--font-header);
-  font-size: 24px;
-  color: #2A9D8F; /* --primary */
+  font-weight: 700;
+  color: #2D3748;
+  text-align: center; /* Centrado horizontal */
+  margin-bottom: 24px;
+}
+
+/* Variante específica para el título de "Valores Fundamentales" */
+.valuesTitle {
+  font-size: 2rem; /* Aumentado de tamaño (antes era h3 estándar ~1.5rem) */
+}
+
+/* Variante para el título de "El Producto" con la línea decorativa centrada */
+.productHeader {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.productHeader::after {
+  margin: 8px auto 0; /* Centra la línea decorativa */
+}
+
+/* --- Finanzas (Highlight) --- */
+.financeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.numberCard {
+  text-align: center;
+  padding: 48px;
+  background: white;
+  border-radius: 20px;
+  border-bottom: 6px solid var(--secondary);
+}
+
+.bigNumber {
+  display: block;
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--secondary);
+  font-family: var(--font-header);
+}
+
+.label {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+  color: #718096;
+  margin-top: 8px;
+  display: block;
+}
+
+/* 1. Contenedor de la sección más compacto verticalmente */
+.financeSectionCompact {
+  padding: 120px 24px; /* Reducimos el padding vertical a la mitad */
+  background-color: #2D3748; /* Mantenemos el fondo oscuro */
+  color: white;
+}
+
+/* 2. Título mucho más grande */
+.financeTitleBig {
+  font-family: var(--font-header);
+  font-size: 3.5rem; /* Aumentamos tamaño para jerarquía fuerte */
+  font-weight: 700;
+  margin-bottom: 24px; /* Acercamos el título al contenido */
+  position: relative;
+  display: inline-block;
+}
+
+/* Adorno del título (línea debajo) */
+.financeTitleBig::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: var(--secondary);
+  margin-top: 8px;
+  border-radius: 2px;
+}
+
+/* 3. Tarjetas de precio más pequeñas y compactas */
+.financeCardSmall {
+  background: white;
+  padding: 24px; /* Menos "aire" interno */
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  flex: 1;
+  border-bottom: 6px solid var(--secondary);
+  color: #2D3748; /* Aseguramos texto oscuro dentro de la tarjeta */
+}
+
+/* Contenedor específico para Marketing */
+.marketSection {
+  padding: 60px 24px;
+  background-color: #F5F2EA; /* Beige para contrastar con el oscuro de finanzas */
+}
+
+.marketGrid {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Plaza ocupa 1 parte, Promo ocupa 2 */
+  gap: 32px;
+  align-items: stretch;
+}
+
+/* Tarjeta de Plaza: Sólida y Directa */
+.plazaCard {
+  background-color: var(--primary); /* Turquesa corporativo */
+  color: white;
+  padding: 40px 32px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(42, 157, 143, 0.2);
+}
+
+/* Tarjeta de Promoción: Amplia y Organizada */
+.promoCard {
+  background-color: white;
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+/* Grid interno para los tags de promoción */
+.promoTagGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Estilo de los tags de promoción */
+.promoTag {
+  padding: 8px 16px;
+  background-color: #F7FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #4A5568;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.promoTag:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+  background-color: white;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .marketGrid {
+    grid-template-columns: 1fr; /* Se apilan en móvil */
+  }
+}
+
+/* --- FODA (Cuadrante Moderno) --- */
+.fodaContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px; /* Gap pequeño para simular líneas divisorias */
+  background-color: #CBD5E0; /* Color de las líneas */
+  border: 1px solid #CBD5E0;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.fodaQuad {
+  background-color: white;
+  padding: 40px;
+  transition: background-color 0.2s;
+}
+
+.fodaQuad:hover { background-color: #F7FAFC; }
+
+.fodaTitle {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--primary);
   margin-bottom: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
-.cardText {
-  font-family: var(--font-body);
+/* Título FODA específico: Centrado, Grande y con Aire */
+.fodaHeaderBig {
+  font-family: var(--font-header);
+  font-size: 3rem; /* Más grande que el estándar */
+  font-weight: 700;
   color: #2D3748;
-  line-height: 1.7;
-  font-size: 16px;
+  text-align: center;
+  margin-bottom: 64px; /* Mucho espacio vertical antes de la tabla */
+  position: relative;
 }
 
-/* --- Valores Corporativos --- */
-.valuesSection {
-  margin-bottom: 80px;
+/* Centrar el adorno debajo del título */
+.fodaHeaderBig::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: var(--primary);
+  margin: 16px auto 0; /* 'auto' en los lados lo centra */
+  border-radius: 2px;
 }
 
-.valuesGrid {
+/* Bloque de Sector Económico */
+.sectorBox {
+  background-color: #F7FAFC; /* Un gris muy tenue para diferenciarlo */
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 700px;
+  margin: 0 auto 48px auto; /* Centrado y separado del título FODA */
+  text-align: center;
+}
+
+.sectorBadge {
+  display: inline-block;
+  background-color: rgba(42, 157, 143, 0.1); /* Turquesa muy suave */
+  color: var(--primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.sectorText {
+  color: #4A5568;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* --- Estrategias (Lista limpia) --- */
+.strategyList {
+  list-style: none;
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
+}
+
+.strategyItem {
+  background: white;
+  padding: 24px;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* --- Tags decorativos --- */
+.tagGroup {
+  display: flex;
+  justify-content: center; /* Centra las píldoras horizontalmente */
+  gap: 12px;
+  flex-wrap: wrap;
   margin-top: 32px;
 }
 
-.valueItem {
-  text-align: center;
-  padding: 24px;
-  border: 1px solid #CBD5E0; /* --gray-300 */
-  border-radius: 8px;
-}
-
-.valueIcon {
-  font-size: 32px;
-  color: #722F37; /* --secondary */
-  margin-bottom: 16px;
-  display: block;
-}
-
-.valueName {
+.pill {
+  padding: 8px 16px;
+  background: rgba(42, 157, 143, 0.1);
+  color: var(--primary);
+  border-radius: 50px;
   font-weight: 600;
-  color: #2D3748;
+  font-size: 0.9rem;
 }
 
-/* --- Análisis FODA (Diseño Cuadrante) --- */
-.fodaGrid {
+/* Utility Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* 1. Contenedor Oscuro de Cierre */
+.darkSection {
+  background-color: #2D3748; /* Gris oscuro corporativo */
+  color: #FFFFFF;
+  padding: 80px 24px;
+}
+
+/* 2. Grid para Talento (Texto a la izquierda, Skills a la derecha) */
+.talentGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 64px;
+  margin-bottom: 80px; /* Separación con la siguiente sub-sección */
+  align-items: center;
 }
 
-.fodaItem {
-  padding: 24px;
-  border-radius: 8px;
-  background-color: #F7FAFC;
+/* Lista de estrategias con checkmarks personalizados */
+.checkList {
+  list-style: none;
+  padding: 0;
 }
 
-.fodaHeader {
+.checkListItem {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: flex-start;
+}
+
+.iconCircle {
+  background-color: rgba(42, 157, 143, 0.2); /* Turquesa transparente */
+  color: var(--primary);
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+}
+
+/* 3. Grid de Capacitaciones (Tarjetas "Glassmorphism") */
+.skillsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.skillCard {
+  background-color: rgba(255, 255, 255, 0.05); /* Blanco muy transparente */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.skillCard:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.skillTitle {
   font-weight: 700;
+  color: var(--primary); /* Turquesa para resaltar */
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   margin-bottom: 8px;
   display: block;
-  text-transform: uppercase;
-  font-size: 14px;
-  letter-spacing: 1px;
 }
 
-/* Colores semánticos para FODA */
-.strengths { color: #2A9D8F; border-top: 3px solid #2A9D8F; } /* Fortalezas */
-.weaknesses { color: #F56565; border-top: 3px solid #F56565; } /* Debilidades */
-.opportunities { color: #4299E1; border-top: 3px solid #4299E1; } /* Oportunidades */
-.threats { color: #ED8936; border-top: 3px solid #ED8936; } /* Amenazas */
+/* 4. Sección de Apoyos y Contingencias (Cards grandes lado a lado) */
+.resilienceGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.resilienceCard {
+  background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  border-left: 4px solid var(--secondary); /* Borde Burdeos para resaltar "Protección/Apoyo" */
+  padding: 32px;
+  border-radius: 0 16px 16px 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .talentGrid, .skillsGrid, .resilienceGrid {
+    grid-template-columns: 1fr; /* Todo en una columna en móvil */
+    gap: 32px;
+  }
+}

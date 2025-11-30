@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Hero.module.css';
 import Button from '../Button/Button'; // Importamos nuestro botón
+import { Link } from 'react-router-dom';
 
 interface HeroProps {}
 
@@ -23,9 +24,9 @@ export const Hero: React.FC<HeroProps> = () => {
         {/* Principio de Proximidad: 
             Los botones están juntos y relacionados con el texto */}
         <div className={styles.buttonGroup}>
-          <Button variant="primary" href="#translate-web">
-            Comenzar a Traducir
-          </Button>
+          <Link to="/demo">
+          <Button variant="primary">Comenzar a Traducir</Button>
+          </Link>
           <Button variant="secondary" href="#desktop-app">
             Conocer la App Desktop
           </Button>

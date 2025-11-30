@@ -30,9 +30,9 @@ export const Header: React.FC<HeaderProps> = () => {
           </li>
         </ul>
         
-        <Button variant="primary" href="#download">
-          Probar Traducción
-        </Button>
+        <Link to="/demo">
+          <Button variant="primary">Probar Traducción Web</Button>
+        </Link>
       </nav>
     </header>
   );
