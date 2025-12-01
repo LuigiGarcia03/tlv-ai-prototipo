@@ -525,3 +525,115 @@
     gap: 32px;
   }
 }
+
+/* --- RESPONSIVE MOBILE (< 768px) --- */
+@media (max-width: 768px) {
+  
+  /* 1. Ajuste General de Tamaños de Letra */
+  .sectionHeader {
+    font-size: 2rem; /* Reducir títulos de sección */
+    margin-bottom: 32px;
+  }
+
+  .sectionHeader::after {
+    width: 60px; /* Línea decorativa más pequeña */
+  }
+
+  .superTitle {
+    font-size: 3.5rem; /* Reducir título principal */
+  }
+
+  .leadText {
+    font-size: 1rem; /* Texto más pequeño y legible */
+    padding: 0 16px;
+  }
+
+  /* 2. Layouts Verticales (Romper Grids) */
+  .bentoGrid, 
+  .twoColumn, 
+  .financeGrid, 
+  .marketGrid, 
+  .fodaContainer, 
+  .talentGrid, 
+  .skillsGrid, 
+  .resilienceGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* Ajuste específico para Misión/Visión */
+  .missionCard, .visionCard {
+    grid-column: auto; 
+    width: 100%;
+    height: auto; /* Dejamos que la altura sea automática */
+    min-height: auto; /* Reseteamos alturas mínimas */
+    padding: 24px; /* Reducimos el padding para dar más espacio al texto */
+    box-sizing: border-box; /* Vital para que no se salga del ancho */
+    overflow: visible; /* Permitimos que el contenido se vea */
+  }
+
+  .missionCard p, .visionCard p {
+    font-size: 1rem; /* Ajustamos el tamaño de la fuente */
+    white-space: normal; /* Forzamos el salto de línea */
+    overflow-wrap: break-word; /* Romper palabras si son muy largas */
+    word-wrap: break-word;
+    max-width: 100%; /* Aseguramos que el párrafo no sea más ancho que la tarjeta */
+  }
+
+  /* 3. Valores (Vertical y visibles) */
+  .ultraCompactSection {
+    padding: 48px 24px;
+  }
+  
+  .ultraCompactSection > div > div { /* El grid interno de producto/valores */
+    display: flex !important;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  /* 4. Finanzas (Precios visibles) */
+  .financeSectionCompact {
+    padding: 64px 24px;
+  }
+
+  .financeTitleBig {
+    font-size: 2.5rem; /* Título financiero más chico */
+  }
+
+  .financeCardSmall {
+    max-width: 100%; /* Que ocupen todo el ancho disponible */
+    margin-bottom: 16px;
+  }
+
+  .bigNumber {
+    font-size: 3rem; /* Números grandes un poco más chicos */
+  }
+
+  /* 5. FODA (Vertical) */
+  .fodaContainer {
+    border-radius: 16px;
+    border: none; /* Quitar borde contenedor */
+    background: transparent; /* Quitar fondo gris */
+    gap: 16px; /* Separación entre tarjetas */
+  }
+
+  .fodaQuad {
+    border: 1px solid #E2E8F0; /* Borde individual */
+    border-radius: 12px; /* Bordes redondeados */
+    padding: 24px;
+  }
+
+  /* Ajustes varios */
+  .promoCard {
+    padding: 24px;
+  }
+  
+  .plazaCard {
+    padding: 32px 24px;
+  }
+  
+  .checkListItem {
+    align-items: flex-start;
+  }
+}

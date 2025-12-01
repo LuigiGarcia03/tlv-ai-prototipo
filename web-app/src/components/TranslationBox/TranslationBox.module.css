@@ -78,6 +78,9 @@
 
 .buttonContainer {
   margin-top: 32px;
+  display: flex;
+  justify-content: center; /* Esto centra el botón horizontalmente */
+  width: 100%;
 }
 
 /* --- Estado de Error --- */
@@ -95,4 +98,16 @@
 
 .errorBox strong {
   color: #C53030; /* Rojo oscuro para el "Error:" */
+}
+
+@media (max-width: 768px) {
+  .boxContainer {
+    grid-template-columns: 1fr; /* Cambia de 2 columnas a 1 sola (vertical) */
+    gap: 24px;
+  }
+
+  /* Ajuste opcional para que la caja de texto no sea tan alta en móvil */
+  .textarea {
+    min-height: 150px; 
+  }
 }
