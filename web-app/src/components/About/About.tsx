@@ -1,15 +1,6 @@
 import React from 'react';
 import styles from './About.module.css';
-import { 
-  FiTarget, FiEye, FiActivity,
-  FiShield, FiTrendingUp, FiUsers, FiAward, 
-  FiBox, FiGlobe, 
-  FiBookOpen,
-  FiSmile,
-  FiCpu,
-  FiUserCheck,
-  FiHeart
-} from 'react-icons/fi';
+import { FiTarget, FiEye, FiBox, FiAward, FiActivity, FiUsers, FiShield, FiGlobe, FiTrendingUp, FiUserCheck, FiHeart, FiBookOpen, FiCpu, FiSmile } from 'react-icons/fi';
 
 export const About: React.FC = () => {
   // Scroll al inicio al cargar
