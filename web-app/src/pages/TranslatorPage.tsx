@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import Button from '../components/Button/Button';
+import Button from '../Button/Button';
 import { FiArrowRight, FiCopy, FiCpu, FiAlertTriangle } from 'react-icons/fi';
 import styles from '../components/TranslationBox/TranslationBox.module.css';
 
@@ -32,7 +32,7 @@ export const TranslatorPage: React.FC = () => {
 
     try {
       const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
       const prompt = `
         Actúa como un traductor profesional de la herramienta Tlv AI.
