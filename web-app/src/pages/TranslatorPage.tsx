@@ -4,11 +4,11 @@ import Button from '../components/Button/Button';
 import { FiArrowRight, FiCopy, FiCpu, FiAlertTriangle } from 'react-icons/fi';
 import styles from '../components/TranslationBox/TranslationBox.module.css';
 
-// --- CONFIGURACIÓN DE LA API ---
-// 1. Intenta leer del archivo .env
-// 2. Si falla, usa la cadena vacía (o pega tu key aquí entre comillas si es una emergencia)
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ""; 
+// ⚠️ CLAVE PEGADA PARA LA DEMO
+const API_KEY = "AIzaSyBmiYhjSkMmMQQYFhNuTo46pwIx-rcKmBE"; 
 
+
+const API_KEY = 
 export const TranslatorPage: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
