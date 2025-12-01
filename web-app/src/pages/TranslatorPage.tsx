@@ -4,16 +4,15 @@ import Button from '../components/Button/Button';
 import { FiArrowRight, FiCopy, FiCpu, FiAlertTriangle } from 'react-icons/fi';
 import styles from '../components/TranslationBox/TranslationBox.module.css';
 
-// --- CONFIGURACIÓN PROFESIONAL (VERCEL) ---
-// El código buscará la variable de entorno 'VITE_GEMINI_API_KEY'
-// que configuraste en el panel de Vercel.
+// --- CONFIGURACIÓN DE LA API (VERCEL) ---
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ""; 
 
 export const TranslatorPage: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // TRUCO: Inicializamos con string vacío para evitar problemas de tipos null/never
+  const [error, setError] = useState(''); 
   const [sourceLang, setSourceLang] = useState('Inglés');
   const [targetLang, setTargetLang] = useState('Español');
 
@@ -23,14 +22,13 @@ export const TranslatorPage: React.FC = () => {
       return;
     }
     
-    // Validación: Si Vercel no inyectó la clave, avisamos.
     if (!API_KEY) {
       setError("Error de configuración: No se detectó la API Key en Vercel.");
       return;
     }
 
     setIsLoading(true);
-    setError(null);
+    setError(''); // Limpiar error previo
 
     try {
       const genAI = new GoogleGenerativeAI(API_KEY);
@@ -53,9 +51,17 @@ export const TranslatorPage: React.FC = () => {
       const text = response.text();
       
       setOutputText(text);
-    } catch (err: any) {
-      console.error("Error:", err);
-      setError("Error al conectar con el servicio de traducción.");
+    } catch (err) {
+      // FIX CRÍTICO: Casteo explícito para evitar error TS2571 (Object is of type 'unknown')
+      const errorObj = err as any;
+      console.error("Error:", errorObj);
+      
+      let errorMsg = "Error al conectar con el servicio de traducción.";
+      if (errorObj.message) {
+         errorMsg = `Error: ${errorObj.message}`;
+      }
+      
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -144,7 +150,8 @@ export const TranslatorPage: React.FC = () => {
         </div>
       </div>
 
-      {error && (
+      {/* Renderizado condicional del error: Solo si la string no está vacía */}
+      {error !== '' && (
         <div style={{ 
           marginTop: '24px', padding: '16px', 
           backgroundColor: '#FFF5F5', color: '#C53030', border: '1px solid #FC8181',
