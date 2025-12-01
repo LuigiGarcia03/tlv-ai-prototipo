@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import Button from '../Button/Button';
+import Button from '../components/Button/Button';
 import { FiArrowRight, FiCopy, FiCpu, FiAlertTriangle } from 'react-icons/fi';
 import styles from '../components/TranslationBox/TranslationBox.module.css';
 
@@ -11,7 +11,6 @@ export const TranslatorPage: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // TRUCO: Inicializamos con string vacío para evitar problemas de tipos null/never
   const [error, setError] = useState(''); 
   const [sourceLang, setSourceLang] = useState('Inglés');
   const [targetLang, setTargetLang] = useState('Español');
@@ -28,7 +27,7 @@ export const TranslatorPage: React.FC = () => {
     }
 
     setIsLoading(true);
-    setError(''); // Limpiar error previo
+    setError('');
 
     try {
       const genAI = new GoogleGenerativeAI(API_KEY);
@@ -51,14 +50,17 @@ export const TranslatorPage: React.FC = () => {
       const text = response.text();
       
       setOutputText(text);
-    } catch (err) {
-      // FIX CRÍTICO: Casteo explícito para evitar error TS2571 (Object is of type 'unknown')
-      const errorObj = err as any;
-      console.error("Error:", errorObj);
+    } catch (err: unknown) {
+      // --- FIX PARA TS2571: Verificación de tipo segura ---
+      console.error("Error capturado:", err);
       
       let errorMsg = "Error al conectar con el servicio de traducción.";
-      if (errorObj.message) {
-         errorMsg = `Error: ${errorObj.message}`;
+
+      // Verificamos si 'err' es realmente un objeto Error estándar
+      if (err instanceof Error) {
+        errorMsg = `Error: ${err.message}`;
+      } else if (typeof err === 'string') {
+        errorMsg = err;
       }
       
       setError(errorMsg);
@@ -150,7 +152,6 @@ export const TranslatorPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Renderizado condicional del error: Solo si la string no está vacía */}
       {error !== '' && (
         <div style={{ 
           marginTop: '24px', padding: '16px', 
