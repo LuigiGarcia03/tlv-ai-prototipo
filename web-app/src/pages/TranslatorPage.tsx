@@ -6,9 +6,7 @@ import styles from '../components/TranslationBox/TranslationBox.module.css';
 
 // ⚠️ CLAVE PEGADA PARA LA DEMO
 const API_KEY = "AIzaSyBmiYhjSkMmMQQYFhNuTo46pwIx-rcKmBE"; 
-
-
-const API_KEY = 
+ 
 export const TranslatorPage: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
