@@ -1,4 +1,4 @@
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import Button from '../components/Button/Button';
 import { FiArrowRight, FiCopy, FiCpu, FiAlertTriangle } from 'react-icons/fi';
@@ -21,8 +21,9 @@ export const TranslatorPage: React.FC = () => {
       return;
     }
     
+    // Validación segura de la API Key
     if (!API_KEY) {
-      setError("Error de configuración: No se detectó la API Key en Vercel.");
+      setError("Error crítico: No se detectó la API Key en las variables de entorno de Vercel.");
       return;
     }
 
@@ -31,7 +32,7 @@ export const TranslatorPage: React.FC = () => {
 
     try {
       const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
       const prompt = `
         Actúa como un traductor profesional de la herramienta Tlv AI.
@@ -50,17 +51,21 @@ export const TranslatorPage: React.FC = () => {
       const text = response.text();
       
       setOutputText(text);
-    } catch (err: unknown) {
-      // --- FIX PARA TS2571: Verificación de tipo segura ---
-      console.error("Error capturado:", err);
+    } catch (rawError) {
+      // --- SOLUCIÓN NUCLEAR PARA EL ERROR TS2571 ---
+      // Convertimos el error a 'any' inmediatamente. 
+      // Esto desactiva las comprobaciones estrictas de TypeScript para esta variable.
+      const e = rawError as any;
+      
+      console.error("Error capturado:", e);
       
       let errorMsg = "Error al conectar con el servicio de traducción.";
 
-      // Verificamos si 'err' es realmente un objeto Error estándar
-      if (err instanceof Error) {
-        errorMsg = `Error: ${err.message}`;
-      } else if (typeof err === 'string') {
-        errorMsg = err;
+      // Ahora podemos acceder a .message sin miedo, porque es 'any'
+      if (e && e.message) {
+        errorMsg = `Error: ${e.message}`;
+      } else if (typeof e === 'string') {
+        errorMsg = e;
       }
       
       setError(errorMsg);
