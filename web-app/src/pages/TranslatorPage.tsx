@@ -4,7 +4,7 @@ import Button from '../components/Button/Button';
 import { FiArrowRight, FiCopy, FiCpu, FiAlertTriangle } from 'react-icons/fi';
 import styles from '../components/TranslationBox/TranslationBox.module.css';
 
-// --- CONFIGURACIÓN DE LA API (VERCEL) ---
+// --- CONFIGURACIÓN API ---
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ""; 
 
 export const TranslatorPage: React.FC = () => {
@@ -21,7 +21,6 @@ export const TranslatorPage: React.FC = () => {
       return;
     }
     
-    // Validación segura de la API Key
     if (!API_KEY) {
       setError("Error crítico: No se detectó la API Key en las variables de entorno de Vercel.");
       return;
@@ -51,18 +50,15 @@ export const TranslatorPage: React.FC = () => {
       const text = response.text();
       
       setOutputText(text);
-    } catch (rawError) {
-      // --- SOLUCIÓN NUCLEAR PARA EL ERROR TS2571 ---
-      // Convertimos el error a 'any' inmediatamente. 
-      // Esto desactiva las comprobaciones estrictas de TypeScript para esta variable.
-      const e = rawError as any;
       
+    // @ts-ignore - Ignoramos explícitamente el chequeo de tipos aquí para evitar el error TS2571
+    } catch (e: any) {
       console.error("Error capturado:", e);
       
       let errorMsg = "Error al conectar con el servicio de traducción.";
 
-      // Ahora podemos acceder a .message sin miedo, porque es 'any'
-      if (e && e.message) {
+      // Acceso directo y seguro gracias al ignore y casting previo
+      if (e?.message) {
         errorMsg = `Error: ${e.message}`;
       } else if (typeof e === 'string') {
         errorMsg = e;
@@ -184,3 +180,4 @@ export const TranslatorPage: React.FC = () => {
     </div>
   );
 };
+
