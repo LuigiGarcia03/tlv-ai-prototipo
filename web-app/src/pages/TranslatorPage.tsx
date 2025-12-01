@@ -4,9 +4,11 @@ import Button from '../components/Button/Button';
 import { FiArrowRight, FiCopy, FiCpu, FiAlertTriangle } from 'react-icons/fi';
 import styles from '../components/TranslationBox/TranslationBox.module.css';
 
-// ⚠️ CLAVE PEGADA PARA LA DEMO
-const API_KEY = "AIzaSyBmiYhjSkMmMQQYFhNuTo46pwIx-rcKmBE"; 
- 
+// --- CONFIGURACIÓN PROFESIONAL (VERCEL) ---
+// El código buscará la variable de entorno 'VITE_GEMINI_API_KEY'
+// que configuraste en el panel de Vercel.
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ""; 
+
 export const TranslatorPage: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
@@ -16,15 +18,14 @@ export const TranslatorPage: React.FC = () => {
   const [targetLang, setTargetLang] = useState('Español');
 
   const handleTranslate = async () => {
-    // Validación básica
     if (!inputText.trim()) {
       setError("Por favor escribe algo para traducir.");
       return;
     }
     
-    // Validación de API Key
+    // Validación: Si Vercel no inyectó la clave, avisamos.
     if (!API_KEY) {
-      setError("Falta la API Key. Revisa el archivo .env o la configuración.");
+      setError("Error de configuración: No se detectó la API Key en Vercel.");
       return;
     }
 
@@ -32,11 +33,8 @@ export const TranslatorPage: React.FC = () => {
     setError(null);
 
     try {
-      // Inicializar el SDK de Google
       const genAI = new GoogleGenerativeAI(API_KEY);
-      
-      // Usamos el modelo 'gemini-1.5-flash' que es rápido y gratuito
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
       const prompt = `
         Actúa como un traductor profesional de la herramienta Tlv AI.
@@ -44,8 +42,7 @@ export const TranslatorPage: React.FC = () => {
         
         Reglas estrictas:
         1. Devuelve SOLAMENTE el texto traducido.
-        2. No incluyas notas, explicaciones, ni comillas adicionales.
-        3. Mantén el tono original del mensaje.
+        2. No incluyas notas ni explicaciones.
 
         Texto a traducir:
         "${inputText}"
@@ -57,29 +54,16 @@ export const TranslatorPage: React.FC = () => {
       
       setOutputText(text);
     } catch (err: any) {
-      console.error("Error detallado:", err);
-      // Mensaje de error amigable para el usuario
-      let errorMsg = "Error de conexión con Gemini.";
-      
-      if (err.message.includes("API key not valid")) {
-        errorMsg = "La API Key no es válida. Verifica tu configuración.";
-      } else if (err.message.includes("403")) {
-        errorMsg = "Acceso denegado (403). Verifica permisos de la API.";
-      } else if (err.message.includes("fetch")) {
-        errorMsg = "Error de red. Verifica tu conexión a internet.";
-      }
-      
-      setError(errorMsg);
+      console.error("Error:", err);
+      setError("Error al conectar con el servicio de traducción.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // ... (El resto del return se mantiene igual que en tu código anterior)
   return (
     <div style={{ padding: '80px 20px', minHeight: '80vh', maxWidth: '1200px', margin: '0 auto' }}>
       
-      {/* Encabezado */}
       <div style={{ marginBottom: '40px', textAlign: 'center' }}>
         <h1 style={{ fontFamily: 'var(--font-header)', color: '#2D3748', fontSize: '3rem', fontWeight: 700 }}>
           Tlv AI <span style={{ color: '#2A9D8F' }}>Web Demo</span>
@@ -89,8 +73,14 @@ export const TranslatorPage: React.FC = () => {
         </p>
       </div>
 
-      {/* Controles de Idioma */}
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '32px', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ 
+        display: 'flex', 
+        gap: '16px', 
+        marginBottom: '32px', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        flexWrap: 'wrap'
+      }}>
         <select 
           value={sourceLang} 
           onChange={(e) => setSourceLang(e.target.value)}
@@ -118,7 +108,6 @@ export const TranslatorPage: React.FC = () => {
         </select>
       </div>
 
-      {/* Área de Traducción */}
       <div className={styles.boxContainer}>
         <div className={styles.inputWrapper}>
           <div className={styles.header}>Entrada</div>
@@ -155,7 +144,6 @@ export const TranslatorPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Mensajes de Error */}
       {error && (
         <div style={{ 
           marginTop: '24px', padding: '16px', 
@@ -168,7 +156,6 @@ export const TranslatorPage: React.FC = () => {
         </div>
       )}
 
-      {/* Botón de Acción */}
       <div className={styles.buttonContainer}>
         <Button variant="primary" onClick={handleTranslate} disabled={isLoading || !inputText}>
           {isLoading ? (
